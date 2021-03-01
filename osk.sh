@@ -1,24 +1,30 @@
 #!/bin/bash
 
 usage () {
-  echo $'\n'"Usage: $0 [-b] [-r]";
+  echo $'\n'"Usage: $0 [-b] [-r] [-k]";
   exit 1;
 }
 
 while [[ "$#" -gt 0 ]]; do
   case $1 in
-    -r|--run)
-      echo $(docker run --rm -it -v $(pwd):/root/env osk)
-      exit 0
+    -b|--build)
+      docker build ./ -t osk;
+      break
       ;;
 
-    -b|--build)
-      echo $(docker build ./ -t osk)
+    -r|--run)
+      docker run --rm -it -d --name osk -v $(pwd):/root/env osk;
+      docker exec -it osk bash;
+      break
+      ;;
+
+    -k|--kill)
+      docker container kill osk;
       break
       ;;
 
     *)
-      usage
+      usage;
       exit 1
       ;;
   esac
