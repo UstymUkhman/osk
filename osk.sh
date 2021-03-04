@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage () {
-  echo $'\n'"Usage: $0 [-b] [-r] [-k]";
+  echo $'\n'"Usage: $0 [-b] [-r] [-l] [-k]";
   exit 1;
 }
 
@@ -15,6 +15,11 @@ while [[ "$#" -gt 0 ]]; do
     -r|--run)
       docker run --rm -it -d --name osk -v $(pwd):/root/env osk;
       docker exec -it osk bash;
+      break
+      ;;
+
+    -l|--launch)
+      qemu-system-x86_64 -L /usr/share/qemu/ -cdrom dist/x86_64/kernel.iso;
       break
       ;;
 
