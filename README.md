@@ -2,7 +2,12 @@
 
 *Operating System Kernel*
 
-# Docker #
+## Setup ##
+
+- [Docker](https://www.docker.com/)
+- [QEMU](https://www.qemu.org/) (*You should also add it's **PATH** to Environment Variables settings on Windows*)
+
+## Docker ##
 
 ### Build Image ###
 
