@@ -1,9 +1,25 @@
-x86_64_sources := $(shell find src/x86_64 -name *.asm)
-x86_64_objects := $(patsubst src/x86_64/%.asm, build/x86_64/%.o, $(x86_64_sources))
+kernel_sources 		 := $(shell find src/kernel -name *.c)
+kernel_objects 		 := $(patsubst src/kernel/%.c, build/kernel/%.o, $(kernel_sources))
 
-$(x86_64_objects): build/x86_64/%.o : src/x86_64/%.asm
+x86_64_c_sources 	 := $(shell find src/x86_64 -name *.c)
+x86_64_c_objects 	 := $(patsubst src/x86_64/%.c, build/x86_64/%.o, $(x86_64_c_sources))
+
+x86_64_asm_sources := $(shell find src/x86_64/asm -name *.asm)
+x86_64_asm_objects := $(patsubst src/x86_64/asm/%.asm, build/x86_64/asm/%.o, $(x86_64_asm_sources))
+
+x86_64_objects 		 := $(kernel_objects) $(x86_64_c_objects) $(x86_64_asm_objects)
+
+$(kernel_objects): build/kernel/%.o : src/kernel/%.c
 	mkdir -p $(dir $@) && \
-	nasm -f elf64 $(patsubst build/x86_64/%.o, src/x86_64/%.asm, $@) -o $@
+	x86_64-elf-gcc -c -I src/interfaces -ffreestanding $(patsubst build/kernel/%.o, src/kernel/%.c, $@) -o $@
+
+$(x86_64_c_objects): build/x86_64/%.o : src/x86_64/%.c
+	mkdir -p $(dir $@) && \
+	x86_64-elf-gcc -c -I src/interfaces -ffreestanding $(patsubst build/x86_64/%.o, src/x86_64/%.c, $@) -o $@
+
+$(x86_64_asm_objects): build/x86_64/asm/%.o : src/x86_64/asm/%.asm
+	mkdir -p $(dir $@) && \
+	nasm -f elf64 $(patsubst build/x86_64/asm/%.o, src/x86_64/asm/%.asm, $@) -o $@
 
 .PHONY: build-x86_64
 build-x86_64: $(x86_64_objects)
