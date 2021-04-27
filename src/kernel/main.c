@@ -2,6 +2,6 @@
 
 void main () {
   clear();
-  setColor(YELLOW, BLACK);
-  // printString("Hello World!");
+  setColor(BLACK, GREEN);
+  centerString("Hello OSK!");
 }

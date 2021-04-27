@@ -26,6 +26,5 @@ enum {
 };
 
 void clear();
-// void printChar(char character);
-// void printString(char* string);
-void setColor(uint8_t foreground, uint8_t background);
+void centerString(char* string);
+void setColor(uint8_t background, uint8_t foreground);

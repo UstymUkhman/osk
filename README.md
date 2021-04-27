@@ -2,6 +2,8 @@
 
 *Operating System Kernel*
 
+![](./public/OSK.png)
+
 ## Setup ##
 
 - [Docker](https://www.docker.com/)
